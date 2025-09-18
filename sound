@@ -1,9 +1,0 @@
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-
-local sound = Instance.new("Sound")
-sound.SoundId = "rbxassetid://78032370350267"
-sound.Looped = true
-sound.Volume = 1
-sound.Parent = player:WaitForChild("PlayerGui")
-sound:Play()
