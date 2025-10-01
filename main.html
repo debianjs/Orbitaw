@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Durcle Team - Chat</title>
+    <link rel="stylesheet" href="main-styles.css">
+</head>
+<body>
+    <!-- Navbar superior -->
+    <nav class="top-navbar">
+        <div class="navbar-content">
+            <div class="navbar-left">
+                <a href="index.html" class="logo">Durcle Team</a>
+                <span class="page-title">Community Forum</span>
+            </div>
+            <div class="navbar-right">
+                <button class="notifications-btn" id="notificationsBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                </button>
+                <div class="user-menu">
+                    <button class="user-btn" id="userMenuBtn">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=default" alt="Avatar" class="user-avatar" id="userAvatar">
+                        <span id="userName">Loading...</span>
+                    </button>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="#" id="profileBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            Profile
+                        </a>
+                        <a href="#" id="settingsBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M12 1v6m0 6v6m-9-9h6m6 0h6"></path>
+                            </svg>
+                            Settings
+                        </a>
+                        <a href="#" id="logoutBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenedor principal -->
+    <div class="main-container">
+        <!-- Sidebar izquierdo (Contactos) -->
+        <aside class="sidebar-left">
+            <div class="sidebar-header">
+                <h3>Contacts</h3>
+                <button class="add-friend-btn" id="addFriendBtn" title="Add Friend">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="sidebar-tabs">
+                <button class="tab-btn active" data-tab="friends">Friends</button>
+                <button class="tab-btn" data-tab="requests">Requests <span class="request-badge" id="requestBadge" style="display: none;">0</span></button>
+            </div>
+
+            <!-- Lista de amigos -->
+            <div class="tab-content active" id="friendsTab">
+                <div class="search-box">
+                    <input type="text" placeholder="Search friends..." id="searchFriends">
+                </div>
+                <div class="contacts-list" id="friendsList">
+                    <div class="loading-contacts">Loading friends...</div>
+                </div>
+            </div>
+
+            <!-- Lista de solicitudes -->
+            <div class="tab-content" id="requestsTab">
+                <div class="contacts-list" id="requestsList">
+                    <div class="no-requests">No pending requests</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Área de chat principal -->
+        <main class="chat-area">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <h2 id="chatTitle">Public Forum</h2>
+                    <span class="online-count" id="onlineCount">0 online</span>
+                </div>
+                <button class="close-chat-btn" id="closeChatBtn" style="display: none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="messages-container" id="messagesContainer">
+                <div class="welcome-message">
+                    <h2>Welcome to Ducle Team! 👋</h2>
+                    <p>Start chatting with the community</p>
+                </div>
+            </div>
+
+            <div class="message-input-container">
+                <div class="message-input-wrapper">
+                    <textarea 
+                        id="messageInput" 
+                        placeholder="Type a message..." 
+                        rows="1"
+                        maxlength="2000"
+                    ></textarea>
+                    <button class="send-btn" id="sendBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+                <div class="char-counter" id="charCounter">0/2000</div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para agregar amigo -->
+    <div class="modal" id="addFriendModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Friend</h3>
+                <button class="modal-close" data-modal="addFriendModal">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="friendEmailInput" placeholder="Enter email or username">
+                <div id="friendSearchResults"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" data-modal="addFriendModal">Cancel</button>
+                <button class="btn-primary" id="sendFriendRequestBtn">Send Request</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de notificaciones -->
+    <div class="notifications-panel" id="notificationsPanel">
+        <div class="notifications-header">
+            <h3>Notifications</h3>
+            <button id="markAllReadBtn">Mark all read</button>
+        </div>
+        <div class="notifications-list" id="notificationsList">
+            <div class="no-notifications">No notifications</div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="main-app.js"></script>
+</body>
+</html>

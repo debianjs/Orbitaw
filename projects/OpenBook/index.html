@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Books</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Menú Superior -->
+    <header class="top-menu">
+        <div class="logo">Open Books</div>
+        <button class="add-book-btn" id="addBookBtn">
+            <span class="plus-icon">+</span>
+        </button>
+    </header>
+
+    <!-- Contenedor Principal de Libros -->
+    <main class="books-container" id="booksContainer">
+        <!-- Los libros se cargarán dinámicamente aquí -->
+    </main>
+
+    <!-- Modal para Subir Libro -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <h2>Subir libro</h2>
+            <form id="uploadForm">
+                <div class="form-group">
+                    <label for="title">Título</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="author">Autor</label>
+                    <input type="text" id="author" name="author" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Descripción</label>
+                    <textarea id="description" name="description" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="image">Elegir imagen</label>
+                    <input type="file" id="image" name="image" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="pdf">Elegir PDF</label>
+                    <input type="file" id="pdf" name="pdf" accept="application/pdf" required>
+                </div>
+                <button type="submit" class="submit-btn">Subir Libro</button>
+            </form>
+            <div class="loading" id="loading" style="display: none;">
+                <p>Subiendo libro...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/main.js"></script>
+    <script src="js/upload.js"></script>
+</body>
+</html>
